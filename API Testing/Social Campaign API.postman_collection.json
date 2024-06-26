@@ -1,0 +1,2522 @@
+{
+	"info": {
+		"_postman_id": "b0fc7aa1-9051-42b2-b9bb-449569303e61",
+		"name": "Social Campaign API",
+		"description": "Dokumentasi API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33032839",
+		"_collection_link": "https://qe-capstone-5.postman.co/workspace/QE---Capstone-5-Workspace~193a16f6-4e3e-4731-8fce-4234e421dd70/collection/33032839-b0fc7aa1-9051-42b2-b9bb-449569303e61?action=share&source=collection_link&creator=33032839"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Login",
+							"item": [
+								{
+									"name": "User can login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Post-response Script for Positive Test Case\r",
+													"pm.test('Response status code should be 200', () => {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test('Response should contain a status property with value success', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('success', true);\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Pre-request Script\r",
+													"// Set the request body with valid username and password\r",
+													"pm.variables.set(\"username\", \"newacc\");\r",
+													"pm.variables.set(\"password\", \"123123\");\r",
+													"\r",
+													"const requestBody = {\r",
+													"    \"username\": pm.variables.get(\"username\"),\r",
+													"    \"password\": pm.variables.get(\"password\")\r",
+													"};\r",
+													"\r",
+													"pm.variables.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer"
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\":\"anggi098\",\r\n    \"password\":\"12345\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/login",
+											"protocol": "https",
+											"host": [
+												"capstone-alterra-424313",
+												"as",
+												"r",
+												"appspot",
+												"com"
+											],
+											"path": [
+												"api",
+												"v1",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "User can't login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Test the status code\r",
+													"pm.test('Response status code should be 401, 400, or 500', () => {\r",
+													"    pm.expect([401, 400, 500]).to.include(pm.response.code);\r",
+													"});\r",
+													"\r",
+													"// Test if the response is in JSON format\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"// Test if the response contains a success or status property indicating an error\r",
+													"pm.test('Response should indicate an error', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.be.an('object');\r",
+													"    pm.expect(responseData).to.have.property('success', false);\r",
+													"});\r",
+													"\r",
+													"// Test if the response contains an error message\r",
+													"pm.test('Response should contain an error message', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('message');\r",
+													"    pm.expect(responseData.message).to.be.a('string');\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Set the request body with invalid username and/or password\r",
+													"pm.variables.set(\"username\", \"invaliduser\");\r",
+													"pm.variables.set(\"password\", \"wrongpassword\");\r",
+													"\r",
+													"const requestBody = {\r",
+													"    \"username\": pm.variables.get(\"username\"),\r",
+													"    \"password\": pm.variables.get(\"password\")\r",
+													"};\r",
+													"\r",
+													"pm.variables.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{USER_TOKEN}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\":\"anggi099\",\r\n    \"password\":\"123124\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/api/v1/login",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Register",
+							"item": [
+								{
+									"name": "User Can Register",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Pre-request Script\r",
+													"// Set the request body with valid registration details\r",
+													"pm.variables.set(\"full_name\", \"John Doe\");\r",
+													"pm.variables.set(\"username\", \"johndoe\");\r",
+													"pm.variables.set(\"email\", \"newaccount@test.com\");\r",
+													"pm.variables.set(\"password\", \"123123\");\r",
+													"pm.variables.set(\"confirm_password\", \"123123\");\r",
+													"\r",
+													"const requestBody = {\r",
+													"    \"full_name\": pm.variables.get(\"full_name\"),\r",
+													"    \"username\": pm.variables.get(\"username\"),\r",
+													"    \"email\": pm.variables.get(\"email\"),\r",
+													"    \"password\": pm.variables.get(\"password\"),\r",
+													"    \"confirm_password\": pm.variables.get(\"confirm_password\")\r",
+													"};\r",
+													"\r",
+													"pm.variables.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Post-response Script for Positive Test Case\r",
+													"pm.test('Response status code should be 200', () => {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test('Response should contain a status property with value success', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('status', 'success');\r",
+													"});\r",
+													"\r",
+													"pm.test('Response should contain a message indicating successful registration', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('message', 'User registered successfully');\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"fullname\":\"Uun Khotimah\",\r\n    \"username\":\"uunkhotimah\",\r\n    \"email\":\"uunkhotimah22@gmail.com\",\r\n    \"no_telp\":62854,\r\n    \"password\":\"12345\",\r\n    \"confirm_password\":\"12345\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/register",
+											"protocol": "https",
+											"host": [
+												"capstone-alterra-424313",
+												"as",
+												"r",
+												"appspot",
+												"com"
+											],
+											"path": [
+												"api",
+												"v1",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "User Can't Register",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Post-response Script for Negative Test Case\r",
+													"pm.test('Response status code should be 400 or 500', () => {\r",
+													"    pm.expect([400, 500]).to.include(pm.response.code); // Expecting 400 or 422 for validation errors\r",
+													"});\r",
+													"\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test('Response should contain a status property with value error', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('status', 'error');\r",
+													"});\r",
+													"\r",
+													"pm.test('Response should contain a message indicating the error', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('message');\r",
+													"    pm.expect(responseData.message).to.be.a('string');\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Pre-request Script\r",
+													"// Set the request body with invalid or missing registration details\r",
+													"pm.variables.set(\"full_name\", \"John Doe\");\r",
+													"pm.variables.set(\"username\", \"\"); // Invalid or missing username\r",
+													"pm.variables.set(\"email\", \"invalidemail.com\"); // Invalid email format\r",
+													"pm.variables.set(\"password\", \"123123\");\r",
+													"pm.variables.set(\"confirm_password\", \"321321\"); // Passwords do not match\r",
+													"\r",
+													"const requestBody = {\r",
+													"    \"full_name\": pm.variables.get(\"full_name\"),\r",
+													"    \"username\": pm.variables.get(\"username\"),\r",
+													"    \"email\": pm.variables.get(\"email\"),\r",
+													"    \"password\": pm.variables.get(\"password\"),\r",
+													"    \"confirm_password\": pm.variables.get(\"confirm_password\")\r",
+													"};\r",
+													"\r",
+													"pm.variables.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"fullname\":\"Uun Khotimah\",\r\n    \"username\":\"uunkhotimah\",\r\n    \"email\":\"uunkhotimah7gmail.com\",\r\n    \"no_telp\":628548493,\r\n    \"password\":\"12345\",\r\n    \"confirm_password\":\"12345\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/register",
+											"protocol": "https",
+											"host": [
+												"capstone-alterra-424313",
+												"as",
+												"r",
+												"appspot",
+												"com"
+											],
+											"path": [
+												"api",
+												"v1",
+												"register"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Reset Password",
+							"item": [
+								{
+									"name": "User can reset password",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Set the token and new password values\r",
+													"pm.environment.set(\"token\", \"your_token_here\");\r",
+													"pm.environment.set(\"new_password\", \"1234\");\r",
+													"pm.environment.set(\"confirm_password\", \"1234\");\r",
+													"\r",
+													"// Create the request body\r",
+													"const requestBody = {\r",
+													"    \"new_password\": pm.environment.get(\"new_password\"),\r",
+													"    \"confirm_password\": pm.environment.get(\"confirm_password\")\r",
+													"};\r",
+													"\r",
+													"// Set the request body in the environment variable\r",
+													"pm.environment.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Test the status code\r",
+													"pm.test('Response status code should be 200', () => {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"// Test if the response is in JSON format\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"// // Test if the response contains a success message\r",
+													"// pm.test('Response should contain a success message', () => {\r",
+													"//     const responseData = pm.response.json();\r",
+													"//     pm.expect(responseData).to.have.property('success', true);\r",
+													"//     pm.expect(responseData).to.have.property('message', 'Password reset successfully');\r",
+													"// });\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"new_password\":\"1234\",\r\n    \"confirm_password\":\"1234\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/reset-password?token=HqMiC5kANEvVYBYTFloONzAb3ewRYzYYUtIewyrxnh0=",
+											"protocol": "https",
+											"host": [
+												"capstone-alterra-424313",
+												"as",
+												"r",
+												"appspot",
+												"com"
+											],
+											"path": [
+												"api",
+												"v1",
+												"reset-password"
+											],
+											"query": [
+												{
+													"key": "token",
+													"value": "HqMiC5kANEvVYBYTFloONzAb3ewRYzYYUtIewyrxnh0="
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "User can't reset password",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Set the token and new password values\r",
+													"pm.environment.set(\"token\", \"invalid_or_expired_token\");\r",
+													"pm.environment.set(\"new_password\", \"1234\");\r",
+													"pm.environment.set(\"confirm_password\", \"1234\");\r",
+													"\r",
+													"// Create the request body\r",
+													"const requestBody = {\r",
+													"    \"new_password\": pm.environment.get(\"new_password\"),\r",
+													"    \"confirm_password\": pm.environment.get(\"confirm_password\")\r",
+													"};\r",
+													"\r",
+													"// Set the request body in the environment variable\r",
+													"pm.environment.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Test the status code\r",
+													"pm.test('Response status code should not be 200', () => {\r",
+													"    pm.response.to.not.have.status(200);\r",
+													"});\r",
+													"\r",
+													"// Test if the response is in JSON format\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"// Test if the response contains an error message\r",
+													"pm.test('Response should contain an error message', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('success', false);\r",
+													"    pm.expect(responseData).to.have.property('message').that.is.a('string');\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/api/v1/reset-password?token={token}",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"reset-password"
+											],
+											"query": [
+												{
+													"key": "token",
+													"value": "{token}"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Forget Password",
+							"item": [
+								{
+									"name": "User can accept password reset request",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Set the valid email address\r",
+													"pm.environment.set(\"email\", \"hanggoroseto6@gmail.com\");\r",
+													"\r",
+													"// Create the request body\r",
+													"const requestBody = {\r",
+													"    \"email\": pm.environment.get(\"email\")\r",
+													"};\r",
+													"\r",
+													"// Set the request body in the environment variable\r",
+													"pm.environment.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Test the status code\r",
+													"pm.test('Response status code should be 200', () => {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"// Test if the response is in JSON format\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"// Test if the response contains a success message\r",
+													"pm.test('Response should contain a success message', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('success', true);\r",
+													"    pm.expect(responseData).to.have.property('message', 'Reset password link sent to your email');\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"uunkhotimah7@gmail.com\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/forget-password",
+											"protocol": "https",
+											"host": [
+												"capstone-alterra-424313",
+												"as",
+												"r",
+												"appspot",
+												"com"
+											],
+											"path": [
+												"api",
+												"v1",
+												"forget-password"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "User can't click forget password",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Set the invalid email address\r",
+													"pm.environment.set(\"email\", \"invalidemail.com\");\r",
+													"\r",
+													"// Create the request body\r",
+													"const requestBody = {\r",
+													"    \"email\": pm.environment.get(\"email\")\r",
+													"};\r",
+													"\r",
+													"// Set the request body in the environment variable\r",
+													"pm.environment.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Test the status code\r",
+													"pm.test('Response status code should not be 200', () => {\r",
+													"    pm.expect(pm.response.code).to.not.equal(200);\r",
+													"});\r",
+													"\r",
+													"// Test if the response is in JSON format\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"// Test if the response contains an error message\r",
+													"pm.test('Response should contain an error message', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('success', false);\r",
+													"    pm.expect(responseData).to.have.property('message').that.is.a('string');\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"email\": \"hanggoroseto6@gmail.com\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/forget-password",
+											"protocol": "https",
+											"host": [
+												"capstone-alterra-424313",
+												"as",
+												"r",
+												"appspot",
+												"com"
+											],
+											"path": [
+												"api",
+												"v1",
+												"forget-password"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					],
+					"description": "Authentication for user"
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Edit Profile",
+							"item": [
+								{
+									"name": "User can edit profile",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Set the profile details\r",
+													"pm.environment.set(\"full_name\", \"John Doe\");\r",
+													"pm.environment.set(\"username\", \"johndoe\");\r",
+													"pm.environment.set(\"profile_picture\", \"https://example.com/avatar.jpg\");\r",
+													"\r",
+													"// Create the request body\r",
+													"const requestBody = {\r",
+													"    \"full_name\": pm.environment.get(\"full_name\"),\r",
+													"    \"username\": pm.environment.get(\"username\"),\r",
+													"    \"profile_picture\": pm.environment.get(\"profile_picture\")\r",
+													"};\r",
+													"\r",
+													"// Set the request body in the environment variable\r",
+													"pm.environment.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													"\r",
+													"// Set the Authorization header\r",
+													"pm.request.headers.add({\r",
+													"    key: 'Authorization',\r",
+													"    value: `Bearer ${pm.environment.get(\"auth_token\")}`\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Test the status code\r",
+													"pm.test('Response status code should be 200', () => {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"// Test if the response is in JSON format\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"// Test if the response contains a success message and profile data\r",
+													"pm.test('Response should not contain a success message and profile data for 401 error', () => {\r",
+													"    if (pm.response.code === 401) {\r",
+													"        const responseData = pm.response.json();\r",
+													"        pm.expect(responseData).to.have.property('message').that.is.a('string');\r",
+													"        pm.expect(responseData.message).to.equal('invalid or expired jwt');\r",
+													"\r",
+													"        // Check if there is no success message and profile data\r",
+													"        pm.expect(responseData).to.not.have.property('status');\r",
+													"        pm.expect(responseData).to.not.have.property('data');\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"// // Test for 401 response and invalid JWT\r",
+													"// pm.test('If response status code is 401, it should contain an error message', () => {\r",
+													"//     if (pm.response.code === 401) {\r",
+													"//         const responseData = pm.response.json();\r",
+													"//         pm.expect(responseData).to.have.property('message').that.is.a('string');\r",
+													"//         pm.expect(responseData.message).to.equal('invalid or expired jwt');\r",
+													"//     }\r",
+													"// });\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"full_name\": \"string\",\r\n    \"username\":\"string\",\r\n    \"email\":\"string\",\r\n    \"avatar_url\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/api/v1/profile/edit",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"profile",
+												"edit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "User can't edit profile",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// Set the invalid profile details\r",
+													"pm.environment.set(\"full_name\", \"\");\r",
+													"pm.environment.set(\"username\", \"\");\r",
+													"pm.environment.set(\"profile_picture\", \"invalid_url\");\r",
+													"\r",
+													"// Create the request body\r",
+													"const requestBody = {\r",
+													"    \"full_name\": pm.environment.get(\"full_name\"),\r",
+													"    \"username\": pm.environment.get(\"username\"),\r",
+													"    \"profile_picture\": pm.environment.get(\"profile_picture\")\r",
+													"};\r",
+													"\r",
+													"// Set the request body in the environment variable\r",
+													"pm.environment.set(\"requestBody\", JSON.stringify(requestBody));\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Test the status code\r",
+													"pm.test('Response status code should be 400, 401, or 422', () => {\r",
+													"    pm.expect(pm.response.code).to.be.oneOf([400, 401, 422]);\r",
+													"});\r",
+													"\r",
+													"// Test if the response is in JSON format\r",
+													"pm.test('Response should be in JSON format', () => {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"// Test if the response contains an error message\r",
+													"pm.test('Response should contain an error message', () => {\r",
+													"    const responseData = pm.response.json();\r",
+													"    pm.expect(responseData).to.have.property('message').that.is.a('string');\r",
+													"\r",
+													"    if (pm.response.code !== 401) {\r",
+													"        pm.expect(responseData).to.have.property('status').that.is.oneOf(['error', 'fail']);\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"full_name\": \"string\",\r\n    \"username\":\"string\",\r\n    \"email\":\"string\",\r\n    \"avatar_url\": \"string\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/api/v1/profile/edit",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"profile",
+												"edit"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Fundraising",
+					"item": [
+						{
+							"name": "Category",
+							"item": [
+								{
+									"name": "All Category",
+									"item": [
+										{
+											"name": "User can't get all category",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"// Test that the response status code is 401 or 403 for unauthorized or forbidden access\r",
+															"pm.test('Response status code should be 401 or 403', () => {\r",
+															"    pm.expect([401, 403]).to.include(pm.response.code);\r",
+															"});\r",
+															"\r",
+															"// Test that the response is in JSON format\r",
+															"pm.test('Response should be in JSON format', () => {\r",
+															"    pm.response.to.be.json;\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains a success property with value false\r",
+															"pm.test('Response should indicate failure', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('success', false);\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains an error message\r",
+															"pm.test('Response should contain an error message', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('message');\r",
+															"    pm.expect(responseData.message).to.be.a('string');\r",
+															"});\r",
+															""
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												},
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"// Clear authentication token or set an invalid token\r",
+															"pm.environment.unset(\"authToken\"); // If you are using an environment variable for the token\r",
+															"// Alternatively, you can set an invalid token\r",
+															"pm.environment.set(\"authToken\", \"invalid_token\");\r",
+															""
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "GET",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/fundraising-categories",
+													"protocol": "https",
+													"host": [
+														"capstone-alterra-424313",
+														"as",
+														"r",
+														"appspot",
+														"com"
+													],
+													"path": [
+														"api",
+														"v1",
+														"fundraising-categories"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "User can get all category",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"// Test that the response status code is 200\r",
+															"pm.test('Response status code should be 200', () => {\r",
+															"    pm.response.to.have.status(200);\r",
+															"});\r",
+															"\r",
+															"// Test that the response is in JSON format\r",
+															"pm.test('Response should be in JSON format', () => {\r",
+															"    pm.response.to.be.json;\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains a success property with value true\r",
+															"pm.test('Response should indicate success', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('success', true);\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains a message property\r",
+															"pm.test('Response should contain a message property', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('message');\r",
+															"    pm.expect(responseData.message).to.be.a('string');\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains a data array with categories\r",
+															"pm.test('Response should contain a data array with categories', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('data').that.is.an('array');\r",
+															"    pm.expect(responseData.data).to.have.length.at.least(1);\r",
+															"\r",
+															"    // Check that each category object has the expected properties\r",
+															"    responseData.data.forEach(category => {\r",
+															"        pm.expect(category).to.have.property('ID').that.is.a('number');\r",
+															"        pm.expect(category).to.have.property('name').that.is.a('string');\r",
+															"        pm.expect(category).to.have.property('CreatedAt').that.is.a('string');\r",
+															"        pm.expect(category).to.have.property('UpdatedAt').that.is.a('string');\r",
+															"        pm.expect(category).to.have.property('DeletedAt');\r",
+															"    });\r",
+															"});\r",
+															""
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{BASE_URL}}/api/v1/fundraising-categories",
+													"host": [
+														"{{BASE_URL}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"fundraising-categories"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "By Category",
+									"item": [
+										{
+											"name": "User can get fundraising by category",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"// Test that the response status code is 200\r",
+															"pm.test('Response status code should be 200', () => {\r",
+															"    pm.response.to.have.status(200);\r",
+															"});\r",
+															"\r",
+															"// Test that the response is in JSON format\r",
+															"pm.test('Response should be in JSON format', () => {\r",
+															"    pm.response.to.be.json;\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains a success property with value true\r",
+															"pm.test('Response should indicate success', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('success', true);\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains a message property\r",
+															"pm.test('Response should contain a message property', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('message');\r",
+															"    pm.expect(responseData.message).to.be.a('string');\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains a data array with fundraisings\r",
+															"pm.test('Response should contain a data array with fundraisings', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('data').that.is.an('array');\r",
+															"    pm.expect(responseData.data).to.have.length.at.least(1);\r",
+															"\r",
+															"    // Check that each fundraising object has the expected properties\r",
+															"    responseData.data.forEach(fundraising => {\r",
+															"        pm.expect(fundraising).to.have.property('id').that.is.a('number');\r",
+															"        pm.expect(fundraising).to.have.property('image_url').that.is.a('string');\r",
+															"        pm.expect(fundraising).to.have.property('title').that.is.a('string');\r",
+															"        pm.expect(fundraising).to.have.property('category_name').that.is.a('string');\r",
+															"        pm.expect(fundraising).to.have.property('current_progress').that.is.a('number');\r",
+															"        pm.expect(fundraising).to.have.property('end_date').that.is.a('string');\r",
+															"    });\r",
+															"});\r",
+															""
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/fundraisings/categories/1?page=1&limit=6",
+													"protocol": "https",
+													"host": [
+														"capstone-alterra-424313",
+														"as",
+														"r",
+														"appspot",
+														"com"
+													],
+													"path": [
+														"api",
+														"v1",
+														"fundraisings",
+														"categories",
+														"1"
+													],
+													"query": [
+														{
+															"key": "page",
+															"value": "1"
+														},
+														{
+															"key": "limit",
+															"value": "6"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "User can't get fundraising by category",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"// Clear authentication token or set an invalid token\r",
+															"pm.environment.unset(\"authToken\"); // If you are using an environment variable for the token\r",
+															"// Alternatively, you can set an invalid token\r",
+															"pm.environment.set(\"authToken\", \"invalid_token\");\r",
+															""
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"// Test that the response status code is 401 or 403 for unauthorized or forbidden access\r",
+															"pm.test('Response status code should be 401 or 403', () => {\r",
+															"    pm.expect([401, 403]).to.include(pm.response.code);\r",
+															"});\r",
+															"\r",
+															"// Test that the response is in JSON format\r",
+															"pm.test('Response should be in JSON format', () => {\r",
+															"    pm.response.to.be.json;\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains a success property with value false\r",
+															"pm.test('Response should indicate failure', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('success', false);\r",
+															"});\r",
+															"\r",
+															"// Test that the response contains an error message\r",
+															"pm.test('Response should contain an error message', () => {\r",
+															"    const responseData = pm.response.json();\r",
+															"    pm.expect(responseData).to.have.property('message');\r",
+															"    pm.expect(responseData.message).to.be.a('string');\r",
+															"});\r",
+															""
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/fundraisings/categories/1?page=1&limit=6",
+													"protocol": "https",
+													"host": [
+														"capstone-alterra-424313",
+														"as",
+														"r",
+														"appspot",
+														"com"
+													],
+													"path": [
+														"api",
+														"v1",
+														"fundraisings",
+														"categories",
+														"1"
+													],
+													"query": [
+														{
+															"key": "page",
+															"value": "1"
+														},
+														{
+															"key": "limit",
+															"value": "6"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Volunteer",
+					"item": [
+						{
+							"name": "Get All Volunteer",
+							"item": [
+								{
+									"name": "Get all Volunteer",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": ""
+										}
+									},
+									"response": [
+										{
+											"name": "Get all Volunteer",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": ""
+												}
+											},
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"description": ""
+												}
+											],
+											"cookie": [],
+											"body": "{\r\n    \"status\":\"success\",\r\n    \"message\":\"\",\r\n    \"data\": [\r\n        {\r\n            \"id\": \"aaa-bbb-ccc\",\r\n            \"fullname\":\"Kent Murpy\",\r\n            \"title\": \"Penggalangan Dana Bencana\",\r\n            \"image_url\": \"res.cloudinary.\",\r\n            \"status\": \"pending\",\r\n            \"date\": \"07-02-2024\"\r\n        },\r\n        {\r\n            \"id\": \"aaa-bbb-ccc\",\r\n            \"fullname\":\"Ariana\",\r\n            \"title\": \"Penggalangan Bencana Alam\",\r\n            \"image_url\": \"res.cloudinary.\",\r\n            \"status\": \"complete\",\r\n            \"date\": \"07-02-2024\"\r\n        }\r\n    ]\r\n}\r\n"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Article",
+					"item": [
+						{
+							"name": "Get news",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/news",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"news"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Get news",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/api/v1/news",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"news"
+											]
+										}
+									},
+									"_postman_previewlanguage": "Text",
+									"header": null,
+									"cookie": [],
+									"body": "{\r\n    \"status\":\"success\",\r\n    \"message\":\"\",\r\n    \"data\":[\r\n        {\r\n  \t\"id\": 1,\r\n  \t\"title\": \"Article Title 1\",\r\n  \t\"content\": \"Content of the article 1\",\r\n  \t\"published_at\": \"2024-01-01T12:00:00Z\"\r\n\t},\r\n\t{\r\n  \t\"id\": 2,\r\n  \t\"title\": \"Article Title 2\",\r\n  \t\"content\": \"Content of the article 2\",\r\n  \t\"published_at\": \"2024-01-02T12:00:00Z\"\r\n\t}\r\n\r\n    ]\r\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Admin can get all user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with a valid admin token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer valid_admin_token'\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 200\r",
+											"pm.test('Response status code should be 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a status property with value success\r",
+											"pm.test('Response should indicate success', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('status', 'success');\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a message property indicating success\r",
+											"pm.test('Response should contain a success message', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message', 'user donations retrieved successfully');\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains data with donations array\r",
+											"pm.test('Response should contain a data array with donations', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('data').that.is.an('array');\r",
+											"    pm.expect(responseData.data).to.have.length.at.least(1);\r",
+											"});\r",
+											"\r",
+											"// Test the structure of each donation object\r",
+											"pm.test('Each donation should have valid fields', () => {\r",
+											"    const donations = pm.response.json().data;\r",
+											"    donations.forEach((donation) => {\r",
+											"        pm.expect(donation).to.have.property('id').that.is.a('number');\r",
+											"        pm.expect(donation).to.have.property('fundraising_name').that.is.a('string');\r",
+											"        pm.expect(donation).to.have.property('organization_name').that.is.a('string');\r",
+											"        pm.expect(donation).to.have.property('amount').that.is.a('number');\r",
+											"        pm.expect(donation).to.have.property('transaction_date').that.is.a('string');\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ1c2VybmFtZSI6ImFuZ2dpMDk4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTk0Mjk1OTN9.6KY5KBIvV-nOAqszQPUkia7UKLRNkwbrcu5S6mjjKfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users?page=1&limit=10",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin can't get all user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with an invalid admin token or no token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer invalid_admin_token' // or remove this line to test with no token\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 401 or 403 for unauthorized or forbidden access\r",
+											"pm.test('Response status code should be 401 or 403', () => {\r",
+											"    pm.expect([401, 403]).to.include(pm.response.code);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a message property indicating an error\r",
+											"pm.test('Response should contain an error message', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ1c2VybmFtZSI6ImFuZ2dpMDk4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTk0Mjk1OTN9.6KY5KBIvV-nOAqszQPUkia7UKLRNkwbrcu5S6mjjKfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users?page=1&limit=10",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin can't delete user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with an invalid admin token or no token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer invalid_admin_token' // or remove this line to test with no token\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 401 or 403 for unauthorized or forbidden access\r",
+											"pm.test('Response status code should be 401 or 403', () => {\r",
+											"    pm.expect([401, 403]).to.include(pm.response.code);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a message property indicating an error\r",
+											"pm.test('Response should contain an error message', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"});\r",
+											"\r",
+											"// // Optional: Check that the error message indicates an invalid or expired token\r",
+											"// pm.test('Error message should indicate invalid or expired token', () => {\r",
+											"//     const responseData = pm.response.json();\r",
+											"//     pm.expect(responseData.message).to.match(/invalid or expired jwt/i);\r",
+											"// });\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ1c2VybmFtZSI6ImFuZ2dpMDk4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTk0Mjk1OTN9.6KY5KBIvV-nOAqszQPUkia7UKLRNkwbrcu5S6mjjKfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users/51",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"51"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin can delete user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with a valid admin token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer valid_admin_token'\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 200\r",
+											"pm.test('Response status code should be 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a success property with value true\r",
+											"pm.test('Response should indicate success', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('success', true);\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a message property with the correct value\r",
+											"pm.test('Response should contain a message indicating successful deletion', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"    pm.expect(responseData.message).to.equal('user deleted successfully');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{admin_access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users/51",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"51"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin can get user donations",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 200\r",
+											"pm.test('Response status code should be 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a success status\r",
+											"pm.test('Response should indicate success', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('status', 'success');\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a message\r",
+											"pm.test('Response should contain a success message', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message', 'user donations retrieved successfully');\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains data with donations array\r",
+											"pm.test('Response should contain a data array with donations', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('data').that.is.an('array');\r",
+											"    pm.expect(responseData.data).to.have.length.at.least(1);\r",
+											"});\r",
+											"\r",
+											"// Test the structure of each donation object\r",
+											"pm.test('Each donation should have valid fields', () => {\r",
+											"    const donations = pm.response.json().data;\r",
+											"    donations.forEach((donation) => {\r",
+											"        pm.expect(donation).to.have.property('id').that.is.a('number');\r",
+											"        pm.expect(donation).to.have.property('fundraising_name').that.is.a('string');\r",
+											"        pm.expect(donation).to.have.property('organization_name').that.is.a('string');\r",
+											"        pm.expect(donation).to.have.property('amount').that.is.a('number');\r",
+											"        pm.expect(donation).to.have.property('transaction_date').that.is.a('string');\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with a valid admin token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer valid_admin_token'\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ1c2VybmFtZSI6ImFuZ2dpMDk4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTk0Mjk1OTN9.6KY5KBIvV-nOAqszQPUkia7UKLRNkwbrcu5S6mjjKfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users/73/donations",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"73",
+										"donations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin can't get user donations",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with an invalid admin token or no token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer invalid_admin_token' // or remove this line to test with no token\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 401 or 403 for unauthorized or forbidden access\r",
+											"pm.test('Response status code should be 401 or 403', () => {\r",
+											"    pm.expect([401, 403]).to.include(pm.response.code);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"// Test that the response contains an error message\r",
+											"pm.test('Response should contain an error message', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message').that.is.a('string');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ1c2VybmFtZSI6ImFuZ2dpMDk4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTk0Mjk1OTN9.6KY5KBIvV-nOAqszQPUkia7UKLRNkwbrcu5S6mjjKfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users/73/donations",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"73",
+										"donations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin can get user volunteers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with a valid admin token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer valid_admin_token'\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 200\r",
+											"pm.test('Response status code should be 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a status property with value success\r",
+											"pm.test('Response should indicate success', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('status', 'success');\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a message property with the correct value\r",
+											"pm.test('Response should contain a message indicating successful retrieval', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"    pm.expect(responseData.message).to.equal('user volunteers retrieved successfully');\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains data property which is an array\r",
+											"pm.test('Response should contain an array of user volunteers', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('data');\r",
+											"    pm.expect(responseData.data).to.be.an('array');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ1c2VybmFtZSI6ImFuZ2dpMDk4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTk0Mjk1OTN9.6KY5KBIvV-nOAqszQPUkia7UKLRNkwbrcu5S6mjjKfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users/54/volunteers",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"54",
+										"volunteers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin can't get user volunteers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with an invalid admin token or no token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer invalid_admin_token' // or remove this line to test with no token\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 401 or 403 for unauthorized or forbidden access\r",
+											"pm.test('Response status code should be 401 or 403', () => {\r",
+											"    pm.expect([401, 403]).to.include(pm.response.code);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains an error message\r",
+											"pm.test('Response should contain an error message', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ1c2VybmFtZSI6ImFuZ2dpMDk4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTk0Mjk1OTN9.6KY5KBIvV-nOAqszQPUkia7UKLRNkwbrcu5S6mjjKfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users/54/volunteers",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"54",
+										"volunteers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin can edit user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with a valid admin token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer valid_admin_token'\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 200\r",
+											"pm.test('Response status code should be 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a success property with value true\r",
+											"pm.test('Response should indicate success', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('success', true);\r",
+											"});\r",
+											"\r",
+											"// Test that the response contains a message property with the correct value\r",
+											"pm.test('Response should contain a message indicating successful edit', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"    pm.expect(responseData.message).to.equal('user edited successfully');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ1c2VybmFtZSI6ImFuZ2dpMDk4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTk0Mjk1OTN9.6KY5KBIvV-nOAqszQPUkia7UKLRNkwbrcu5S6mjjKfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullname\":\"sinta ayu\",\r\n    \"username\":\"sinta\",\r\n    \"email\":\"sinta@gmail.com\",\r\n    \"no_telp\":\"111111\",\r\n    \"password\":\"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users/73",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"73"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin can't edit user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set authorization header with an invalid admin token or no token\r",
+											"pm.request.headers.add({\r",
+											"    key: 'Authorization',\r",
+											"    value: 'Bearer invalid_admin_token' // or remove this line to test with no token\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test that the response status code is 401 or 403 for unauthorized or forbidden access\r",
+											"pm.test('Response status code should be 401 or 403', () => {\r",
+											"    pm.expect([401, 403]).to.include(pm.response.code);\r",
+											"});\r",
+											"\r",
+											"// Test that the response is in JSON format\r",
+											"pm.test('Response should be in JSON format', () => {\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"// Test that the response contains an error message\r",
+											"pm.test('Response should contain an error message', () => {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"    pm.expect(responseData.message).to.be.a('string');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIxLCJ1c2VybmFtZSI6ImFuZ2dpMDk4Iiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTk0Mjk1OTN9.6KY5KBIvV-nOAqszQPUkia7UKLRNkwbrcu5S6mjjKfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullname\":\"sinta ayu\",\r\n    \"username\":\"sinta\",\r\n    \"email\":\"sinta@gmail.com\",\r\n    \"no_telp\":\"111111\",\r\n    \"password\":\"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://capstone-alterra-424313.as.r.appspot.com/api/v1/admin/users/73",
+									"protocol": "https",
+									"host": [
+										"capstone-alterra-424313",
+										"as",
+										"r",
+										"appspot",
+										"com"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"73"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Fundraising",
+					"item": [
+						{
+							"name": "Get All Fundraising",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": [
+								{
+									"name": "Get All Fundraising",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": ""
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n    \"status\":\"success\",\r\n    \"message\":\"\",\r\n    \"data\":[]\r\n}"
+								}
+							]
+						},
+						{
+							"name": "Create new fundraising",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update fundraising",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete fundraising",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Article",
+					"item": [
+						{
+							"name": "Get All Article",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": ""
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"success\",\n    \"message\": \"\",\n    \"data\": []\n}"
+								}
+							]
+						},
+						{
+							"name": "Create new news",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update news",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete news",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Volunteer",
+					"item": [
+						{
+							"name": "Get All Volunteer",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/admin/volunteer",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"volunteer"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/api/admin/volunteer",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"api",
+												"admin",
+												"volunteer"
+											]
+										}
+									},
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": ""
+										}
+									],
+									"cookie": [],
+									"body": "{\r\n    \"status\":\"success\",\r\n    \"message\":\"successfully show all volunteer\",\r\n    \"data\":\r\n    [\r\n        {\r\n            \"id\":\"aaa-bbb-ccc\",\r\n            \"avatar_url\":\"res.cloudinary.\",\r\n            \"fullname\":\"string\",\r\n            \"title\":\"string\",\r\n            \"date\":\"dd-mm-yyyy\"\r\n        },\r\n        {\r\n            \"id\":\"aaa-bbb-ccc\",\r\n            \"avatar_url\":\"res.cloudinary.\",\r\n            \"fullname\":\"string\",\r\n            \"title\":\"string\",\r\n            \"date\":\"dd-mm-yyyy\"\r\n        }\r\n    ]\r\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{Token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "https://capstone-alterra-424313.as.r.appspot.com"
+		},
+		{
+			"key": "Token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJqb2huZG9lIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MTY5NzM5MzF9.u9-_9RG9GYFJfV8LDCtvWrDbznEbsmks7M2vEQvLc1E",
+			"type": "string"
+		}
+	]
+}
